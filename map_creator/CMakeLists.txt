@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(octomap REQUIRED)
+find_package(HDF5 REQUIRED)
 
 add_message_files(
  FILES
@@ -48,7 +49,9 @@ add_library(hdf5_dataset  src/hdf5_dataset.cpp)
 
 target_link_libraries(sphere_discretization  ${catkin_LIBRARIES} ${OCTOMAP_LIBRARIES} ${PCL_LIBRARY_DIRS})
 target_link_libraries(kinematics  ${catkin_LIBRARIES} -llapack)
-target_link_libraries(hdf5_dataset  ${catkin_LIBRARIES} )
+# target_link_libraries(hdf5_dataset  ${catkin_LIBRARIES})
+# target_link_libraries(hdf5_dataset  ${catkin_LIBRARIES} -ldhf5 -ldhf5_cpp)
+target_link_libraries(hdf5_dataset  ${catkin_LIBRARIES} ${HDF5_LIBRARIES})
 
 install(TARGETS sphere_discretization kinematics hdf5_dataset
  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
