@@ -55,7 +55,7 @@ bool Hdf5Dataset::open()
 {
   const char *filepath = this->path_.c_str();
   const char *name = this->filename_.c_str();
-  char fullpath[100];
+  char fullpath[300]; // TODO: Probably a better way to do this than hard defining the length
   strcpy(fullpath, filepath);
   strcat(fullpath, name);
   ROS_INFO("Opening map %s", this->filename_.c_str());
@@ -70,14 +70,14 @@ bool Hdf5Dataset::open()
   this->attr_ = H5Aopen(this->sphere_dataset_, "Resolution", H5P_DEFAULT);
   herr_t ret = H5Aread(this->attr_, H5T_NATIVE_FLOAT, &this->res_);
 
-  return true
+  return true;
 }
 
 bool Hdf5Dataset::open_cap()
 {
   const char *filepath = this->path_.c_str();
   const char *name = this->filename_.c_str();
-  char fullpath[100];
+  char fullpath[300]; // TODO: Probably a better way to do this than hard defining the length
   strcpy(fullpath, filepath);
   strcat(fullpath, name);
   ROS_INFO("Opening Capability map %s", this->filename_.c_str());
@@ -89,7 +89,7 @@ bool Hdf5Dataset::open_cap()
   this->attr_ = H5Aopen(this->capability_dataset_, "Resolution", H5P_DEFAULT);
   herr_t ret = H5Aread(this->attr_, H5T_NATIVE_FLOAT, &this->res_);
 
-  return true
+  return true;
 }
 
 void Hdf5Dataset::close()
@@ -152,7 +152,7 @@ bool Hdf5Dataset::saveCapMapsToDataset(VectorOfVectors &capability_data, float &
   }
   const char *filepath = this->path_.c_str();
   const char *name = this->filename_.c_str();
-  char fullpath[100];
+  char fullpath[300]; // TODO: Probably a better way to do this than hard defining the length
   strcpy(fullpath, filepath);
   strcat(fullpath, name);
   ROS_INFO("Saving Capability Map %s", this->filename_.c_str());
@@ -223,7 +223,7 @@ bool Hdf5Dataset::saveReachMapsToDataset( MultiMapPtr& poses,  MapVecDoublePtr& 
 
   const char *filepath = this->path_.c_str();
   const char *name = this->filename_.c_str();
-  char fullpath[100];
+  char fullpath[300]; // TODO: Probably a better way to do this than hard defining the length
   strcpy(fullpath, filepath);
   strcat(fullpath, name);
   ROS_INFO("Saving map %s", this->filename_.c_str());
@@ -464,7 +464,7 @@ bool Hdf5Dataset::h5ToMultiMapPoses(MultiMap& pose_col)
 {
   MapVecDouble sphere_col;
   h5ToMultiMapPoses(pose_col, sphere_col);
-  return true
+  return true;
 }
 
 bool Hdf5Dataset::h5ToMultiMapPoses(MultiMap& pose_col, MapVecDouble& sphere_col)
