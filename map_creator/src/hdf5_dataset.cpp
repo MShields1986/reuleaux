@@ -22,7 +22,6 @@ Hdf5Dataset::Hdf5Dataset(std::string fullpath)
   oss_file<< seglist.back();
   this->filename_ = oss_file.str();
 
-
   seglist.pop_back();
   std::ostringstream oss_path;
   if (!seglist.empty())
@@ -71,6 +70,7 @@ bool Hdf5Dataset::open()
   this->attr_ = H5Aopen(this->sphere_dataset_, "Resolution", H5P_DEFAULT);
   herr_t ret = H5Aread(this->attr_, H5T_NATIVE_FLOAT, &this->res_);
 
+  return true
 }
 
 bool Hdf5Dataset::open_cap()
@@ -89,6 +89,7 @@ bool Hdf5Dataset::open_cap()
   this->attr_ = H5Aopen(this->capability_dataset_, "Resolution", H5P_DEFAULT);
   herr_t ret = H5Aread(this->attr_, H5T_NATIVE_FLOAT, &this->res_);
 
+  return true
 }
 
 void Hdf5Dataset::close()
@@ -114,7 +115,9 @@ bool Hdf5Dataset::checkPath(std::string path)
   if (stat(path.c_str(), &st)!=0)
   {
     ROS_INFO("Path does not exist yet");
-    //return false;
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -136,6 +139,8 @@ bool Hdf5Dataset::checkFileName(std::string filename)
   {
     ROS_ERROR("Please provide an extension of .h5 It will make life easy");
     exit(1);
+  } else {
+    return true;
   }
 }
 
@@ -371,11 +376,12 @@ bool Hdf5Dataset::saveReachMapsToDataset( MultiMapPtr& poses,  MapVecDoublePtr& 
   //H5Aclose(this->attr_);
 
   // Closing all
-
   H5Sclose(sphere_dataspace);
   H5Sclose(file_space);
   H5Sclose(mem_space);
   close();
+
+  return true;
 }
 
 bool Hdf5Dataset::h5ToVectorCap(VectorOfVectors &capability_data)
@@ -458,6 +464,7 @@ bool Hdf5Dataset::h5ToMultiMapPoses(MultiMap& pose_col)
 {
   MapVecDouble sphere_col;
   h5ToMultiMapPoses(pose_col, sphere_col);
+  return true
 }
 
 bool Hdf5Dataset::h5ToMultiMapPoses(MultiMap& pose_col, MapVecDouble& sphere_col)
