@@ -103,20 +103,32 @@ ros::init(argc, argv, "inverse_workspace");
     h5file.open();
     h5file.loadMapsFromDataset(pose_col_filter, sphere_col, res);
 
-    // Starting to create the Inverse Reachability map. The resolution will be the same as the reachability map
+    ROS_INFO("Here A");
 
+    // Starting to create the Inverse Reachability map. The resolution will be the same as the reachability map
     unsigned char max_depth = 16;
     unsigned char minDepth = 0;
     float size_of_box = 1.5;
     float resolution = res;
+
+    // Catch for resolution of zero
+    if (res < 0.005) {
+      ROS_ERROR("Resolution set lower than is practicable (0.005): %f", resolution);
+      ROS_INFO("Setting resolution to 0.15");
+      resolution = 0.15;
+    }
+
+    ROS_INFO("Resolution: %f", resolution);
+
     sphere_discretization::SphereDiscretization sd;
 
     octomap::point3d origin = octomap::point3d(0, 0, 0);  // As these map is independent of any task points, it is centered around origin.
                                         // For dependent maps, the whole map will be transformed to that certain task
                                         // point
+
+    // ROS_INFO("Resolution: %f", res);
     octomap::OcTree *tree = sd.generateBoxTree(origin, size_of_box, resolution);
     std::vector< octomap::point3d > new_data;
-
     std::vector< geometry_msgs::Pose > pose;
     sd.make_sphere_poses(origin, resolution, pose);  // calculating number of points on a sphere by discretization
 
@@ -176,6 +188,15 @@ ros::init(argc, argv, "inverse_workspace");
     pcl::octree::OctreePointCloudSearch< pcl::PointXYZ > octree(resolution);
     octree.setInputCloud(cloud);
     octree.addPointsFromInputCloud();
+
+    // Get bounding box for checking NN search validity
+    double min_x, min_y, min_z, max_x, max_y, max_z;
+    octree.getBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
+
+    ROS_DEBUG("X Min: %f Max: %f", min_x, max_x);
+    ROS_DEBUG("Y Min: %f Max: %f", min_y, max_y);
+    ROS_DEBUG("Z Min: %f Max: %f", min_z, max_z);
+
     for (int i = 0; i < new_data.size(); i++)
     {
       pcl::PointXYZ search_point;
@@ -186,7 +207,18 @@ ros::init(argc, argv, "inverse_workspace");
       // Neighbors within voxel search
 
       std::vector< int > point_idx_vec;
-      octree.voxelSearch(search_point, point_idx_vec);
+
+      ROS_DEBUG("Search Point X: %f, Y: %f, Z: %f", search_point.x, search_point.y, search_point.z);
+      
+      // Check that the search point is valid
+      // https://github.com/ros-industrial-consortium/reuleaux/issues/68
+      bool isInBox = (search_point.x >= min_x && search_point.x <= max_x) && (search_point.y >= min_y && search_point.y <= max_y) && (search_point.z >= min_z && search_point.z <= max_z);
+      ROS_DEBUG("Point is in box: %d", isInBox);
+      if (isInBox) {
+        octree.voxelSearch(search_point, point_idx_vec);
+      }
+
+
 
       if (point_idx_vec.size() > 0)
       {

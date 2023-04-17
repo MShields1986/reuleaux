@@ -52,6 +52,7 @@ octomap::OcTree* SphereDiscretization::generateSphereTree2(const octomap::point3
 
 octomap::OcTree* SphereDiscretization::generateBoxTree(const octomap::point3d& origin, float diameter, float resolution)
 {
+  ROS_DEBUG("generateBoxTree: Dia: %f, Res: %f", diameter, resolution);
   octomap::OcTree* tree = new octomap::OcTree(resolution / 2);
   octomap::Pointcloud p;
   for (float x = origin.x() - diameter * 1.5; x <= origin.x() + diameter * 1.5; x += resolution)
