@@ -649,6 +649,14 @@ void SphereDiscretization::associatePose(std::multimap< std::vector< double >, s
   octree.setInputCloud(cloud);
   octree.addPointsFromInputCloud();
 
+  // Get bounding box for checking search validity
+  double min_x, min_y, min_z, max_x, max_y, max_z;
+  octree.getBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
+
+  ROS_DEBUG("X Min: %f Max: %f", min_x, max_x);
+  ROS_DEBUG("Y Min: %f Max: %f", min_y, max_y);
+  ROS_DEBUG("Z Min: %f Max: %f", min_z, max_z);
+
   // add all base poses from cloud to an octree
   for (int i = 0; i < spCenter.size(); i++)
   {
@@ -659,7 +667,18 @@ void SphereDiscretization::associatePose(std::multimap< std::vector< double >, s
 
     // Find all base poses that lie in the given voxel
     std::vector< int > pointIdxVec;
-    octree.voxelSearch(searchPoint, pointIdxVec);
+
+    ROS_DEBUG("Search Point X: %f, Y: %f, Z: %f", searchPoint.x, searchPoint.y, searchPoint.z);
+
+    // Check that the search point is valid
+    // https://github.com/ros-industrial-consortium/reuleaux/issues/68
+    bool isInBox = (searchPoint.x >= min_x && searchPoint.x <= max_x) && (searchPoint.y >= min_y && searchPoint.y <= max_y) && (searchPoint.z >= min_z && searchPoint.z <= max_z);
+    ROS_DEBUG("Point is in box: %d", isInBox);
+
+    if (isInBox) {
+      octree.voxelSearch(searchPoint, pointIdxVec);
+    }
+
     if (pointIdxVec.size() > 0)
     {
       std::vector< double > voxel_pos;

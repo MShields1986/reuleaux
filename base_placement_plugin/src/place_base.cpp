@@ -439,7 +439,7 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
   for (int i = 0; i < po.size(); ++i)
   {
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/base_link";
+    marker.header.frame_id = "base_link";
     marker.header.stamp = ros::Time::now();
     marker.ns = "points";
     marker.action = visualization_msgs::Marker::ADD;
@@ -486,7 +486,7 @@ void PlaceBase::showBaseLocationsbyRobotModel(std::vector< geometry_msgs::Pose >
   ros::NodeHandle nh;
   /*ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseArray>("robot",1);
   geometry_msgs::PoseArray poArr;
-  poArr.header.frame_id="/base_link";
+  poArr.header.frame_id="base_link";
   poArr.header.stamp=ros::Time::now();
   for(int i=0;i<po.size();++i)
   {
@@ -500,7 +500,7 @@ void PlaceBase::showBaseLocationsbyRobotModel(std::vector< geometry_msgs::Pose >
   for (int i = 0; i < po.size(); ++i)
   {
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/base_link";
+    marker.header.frame_id = "base_link";
     marker.header.stamp = ros::Time::now();
     marker.ns = "points";
     marker.action = visualization_msgs::Marker::ADD;
@@ -541,6 +541,14 @@ void PlaceBase::setReachabilityData(std::multimap< std::vector< double >, std::v
   PoseColFilter = PoseCollection;
   SphereCol = SphereCollection;
   res = resolution;
+
+  // Catch for resolution of zero
+  if (res < 0.005) {
+    ROS_ERROR("Resolution set lower than is practicable (0.005): %f", resolution);
+    ROS_INFO("Setting resolution to 0.15");
+    res = 0.15;
+  }
+
   ROS_INFO("Size of poses dataset: %lu", PoseColFilter.size());
   ROS_INFO("Size of Sphere dataset: %lu", SphereCol.size());
   ROS_INFO("Resolution: %f", res);
@@ -560,7 +568,7 @@ void PlaceBase::ShowUnionMap(bool show_map)
     ros::Publisher workspace_pub = n.advertise< map_creator::WorkSpace >("reachability_map", 1);
     map_creator::WorkSpace ws;
     ws.header.stamp = ros::Time::now();
-    ws.header.frame_id = "/base_link";
+    ws.header.frame_id = "base_link";
     ws.resolution = res;
 
     for (std::multimap< std::vector< double >, double >::iterator it = sphereColor.begin(); it != sphereColor.end(); ++it)
