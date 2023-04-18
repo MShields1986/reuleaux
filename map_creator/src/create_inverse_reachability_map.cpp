@@ -104,6 +104,7 @@ ros::init(argc, argv, "inverse_workspace");
     h5file.loadMapsFromDataset(pose_col_filter, sphere_col, res);
 
     // Starting to create the Inverse Reachability map. The resolution will be the same as the reachability map
+
     unsigned char max_depth = 16;
     unsigned char minDepth = 0;
     float size_of_box = 1.5;
@@ -215,8 +216,6 @@ ros::init(argc, argv, "inverse_workspace");
       if (isInBox) {
         octree.voxelSearch(search_point, point_idx_vec);
       }
-
-
 
       if (point_idx_vec.size() > 0)
       {

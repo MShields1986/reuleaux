@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(map_creator)
 
-
 find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
   roscpp
@@ -10,6 +9,9 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2
   pcl_ros
+  moveit_ros_planning_interface
+  moveit_core
+  interactive_markers
 )
 
 find_package(octomap REQUIRED)
