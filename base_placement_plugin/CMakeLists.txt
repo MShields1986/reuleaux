@@ -113,37 +113,24 @@ catkin_package(
 
 
 # <<<<<<< HEAD
-qt_wrap_ui(UI_GENERATED_HEADERS ${base_placement_plugin_UIS})
-
-# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
-# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_MOCS} ${base_placement_plugin_UIS_H})
-
-
-add_library(
-  ${PROJECT_NAME}
-  ${base_placement_plugin_SRCS}
-  ${base_placement_plugin_UIS}
-  ${UI_GENERATED_HEADERS}
-  ${base_placement_plugin_MOCS}
-  ${base_placement_plugin_UIS_H}
-)
-
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
-
-
-# =======
-# qt4_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
-# qt4_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
 qt_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
 qt_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
 
 include_directories(${base_placement_plugin_INCLUDE_DIRECTORIES} ${catkin_INCLUDE_DIRS})
 
-# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}  yaml-cpp -lhdf5 -lhdf5_cpp  create_marker)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}  yaml-cpp create_marker)
+# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
+# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_MOCS} ${base_placement_plugin_UIS_H})
 
-## target_link_libraries(${PROJECT_NAME} yaml-cpp)
-# >>>>>>> master
+add_library(
+  ${PROJECT_NAME}
+  ${base_placement_plugin_SRCS}
+  ${base_placement_plugin_UIS}
+  ${base_placement_plugin_MOCS}
+  ${base_placement_plugin_UIS_H}
+)
+
+# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
+# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}  yaml-cpp create_marker)
 
 target_link_libraries(
   ${PROJECT_NAME}
@@ -151,7 +138,9 @@ target_link_libraries(
   ${QT_QTCORE_LIBRARY}
   ${QT_LIBRARIES}
   ${rviz_DEFAULT_PLUGIN_LIBRARIES}
+  ${QT_QTGUI_LIBRARY}
   yaml-cpp
+  create_marker
 )
 
 
