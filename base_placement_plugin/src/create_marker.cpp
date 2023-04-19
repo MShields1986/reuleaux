@@ -44,6 +44,9 @@ bool checkForJointSoln(const std::vector<double>& soln)
 {
   if(std::equal(soln.begin()+1, soln.end(), soln.begin()))
     return true;
+  else {
+    return false;
+  }
 }
 
 void CreateMarker::updateRobotState(const std::vector<double>& joint_soln, moveit::core::RobotStatePtr robot_state)
@@ -193,17 +196,19 @@ void CreateMarker::makeIntMarkers(BasePoseJoint &basePJoints, bool arm_only, std
 
 bool CreateMarker::makeRobotMarker(BasePoseJoint baseJoints, std::vector<visualization_msgs::InteractiveMarker> &iMarkers, bool show_unreachable_models)
 {
- if(!show_unreachable_models)
-     discardUnreachableModels(baseJoints);
+  if(!show_unreachable_models)
+    discardUnreachableModels(baseJoints);
   makeIntMarkers(baseJoints, false, iMarkers);
+  return false;
 }
 
 
 bool CreateMarker::makeArmMarker(BasePoseJoint baseJoints, std::vector<visualization_msgs::InteractiveMarker> &iMarkers, bool show_unreachable_models)
 {
   if(!show_unreachable_models)
-      discardUnreachableModels(baseJoints);
-   makeIntMarkers(baseJoints, true, iMarkers);
+    discardUnreachableModels(baseJoints);
+  makeIntMarkers(baseJoints, true, iMarkers);
+  return false;
 }
 
 
