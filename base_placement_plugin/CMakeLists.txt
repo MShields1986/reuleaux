@@ -7,6 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
   interactive_markers
   pluginlib
   roscpp
+  rqt_gui
+  rqt_gui_cpp
   rviz
   visualization_msgs
   tf
@@ -17,6 +19,9 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning_interface
   moveit_core
 )
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 
 if(rviz_QT_VERSION VERSION_LESS "5")
@@ -37,41 +42,24 @@ else()
   endmacro()
 endif()
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-DQT_NO_KEYWORDS)
  
 
-# <<<<<<< HEAD
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES 
-	${PROJECT_NAME}
-  CATKIN_DEPENDS
-  	interactive_markers
-  	pluginlib
-  	roscpp
-  #rqt_gui
-  	rviz
-  #rqt_gui_cpp
-  	visualization_msgs
-  	map_creator
-# =======
-# add_library(create_marker  src/create_marker.cpp)
-# target_link_libraries(create_marker  ${catkin_LIBRARIES} )
-# set(base_placement_plugin_SRCS
-#   src/add_way_point.cpp
-#   src/point_tree_item.cpp
-#   src/point_tree_model.cpp
-#   src/widgets/base_placement_widget.cpp
-#   src/place_base.cpp
-#   src/add_robot_base.cpp
-#   ${MOC_FILES}
-# >>>>>>> ad33a164d2e81bdbb79c2aa6d508c686f633be14
+add_library(create_marker  src/create_marker.cpp)
+target_link_libraries(create_marker  ${catkin_LIBRARIES} )
+
+
+set(base_placement_plugin_SRCS
+  src/add_way_point.cpp
+  src/point_tree_item.cpp
+  src/point_tree_model.cpp
+  src/widgets/base_placement_widget.cpp
+  src/place_base.cpp
+  src/add_robot_base.cpp
+  ${base_placement_plugin_MOCS}
+  ${MOC_FILES}
 )
 
-
-include_directories(include ${catkin_INCLUDE_DIRS})
 
 set(base_placement_plugin_HDRS
   include/base_placement_plugin/add_way_point.h
@@ -80,49 +68,62 @@ set(base_placement_plugin_HDRS
   include/base_placement_plugin/widgets/base_placement_widget.h
   include/base_placement_plugin/place_base.h
   include/base_placement_plugin/add_robot_base.h
-
-  
 )
-
-qt_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS})
-
-set(base_placement_plugin_SRCS
-  src/add_way_point.cpp
-  src/point_tree_item.cpp
-  src/point_tree_model.cpp
-  src/widgets/base_placement_widget.cpp
-  src/place_base.cpp
-  ${base_placement_plugin_MOCS}
-  )
-
 
 set(base_placement_plugin_UIS
   src/widgets/base_placement_widget.ui
 )
 
+set(base_placement_plugin_INCLUDE_DIRECTORIES
+  include
+  ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+catkin_package(
+  INCLUDE_DIRS
+  ${base_placement_plugin_INCLUDE_DIRECTORIES}
+  LIBRARIES
+  ${PROJECT_NAME}
+  CATKIN_DEPENDS
+    interactive_markers
+    pluginlib
+    roscpp
+    rqt_gui
+    rviz
+    rqt_gui_cpp
+    visualization_msgs
+    map_creator
+)
 
 
-# <<<<<<< HEAD
+qt_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
 qt_wrap_ui(UI_GENERATED_HEADERS ${base_placement_plugin_UIS})
 
 
+include_directories(
+  ${base_placement_plugin_INCLUDE_DIRECTORIES}
+  ${catkin_INCLUDE_DIRS}
+)
 
-add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
 
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
+add_library(
+  ${PROJECT_NAME}
+  ${base_placement_plugin_SRCS}
+  ${base_placement_plugin_UIS}
+  ${UI_GENERATED_HEADERS}
+  ${base_placement_plugin_MOCS}
+  ${base_placement_plugin_UIS_H}
+)
 
 
-
-# =======
-# qt4_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
-# qt4_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
-
-# include_directories(${base_placement_plugin_INCLUDE_DIRECTORIES} ${catkin_INCLUDE_DIRS})
-# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_MOCS} ${base_placement_plugin_UIS_H}) # ${base_placement_plugin_UIS_H}
-# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}  yaml-cpp -lhdf5 -lhdf5_cpp  create_marker)
-## target_link_libraries(${PROJECT_NAME} yaml-cpp)
-# >>>>>>> ad33a164d2e81bdbb79c2aa6d508c686f633be14
-
+target_link_libraries(
+  ${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+  ${QT_QTCORE_LIBRARY}
+  ${QT_LIBRARIES}
+  ${rviz_DEFAULT_PLUGIN_LIBRARIES}
+  yaml-cpp
+)
 
 
 find_package(class_loader)
@@ -134,6 +135,10 @@ install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+install(PROGRAMS scripts/base_placement_plugin
+  DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+)
+
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
@@ -141,4 +146,3 @@ install(DIRECTORY include/${PROJECT_NAME}/
 install(FILES plugin.xml
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
-
