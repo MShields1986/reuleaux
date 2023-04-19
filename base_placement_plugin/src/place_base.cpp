@@ -329,7 +329,7 @@ double PlaceBase::calculateScoreForArmBase(std::vector<geometry_msgs::Pose> &gra
 
 void PlaceBase::transformFromRobotbaseToArmBase(const geometry_msgs::Pose& base_pose, geometry_msgs::Pose &arm_base_pose)
 {
-  //moveit::planning_interface::MoveGroup group(selected_group_);//Creating move group
+  //moveit::planning_interface::MoveGroupInterface group(selected_group_);//Creating move group
   const moveit::core::JointModelGroup* arm_jmp = robot_model_->getJointModelGroup(selected_group_);
   const std::vector<std::string>& arm_link_names = arm_jmp->getLinkModelNames();
   moveit::core::RobotStatePtr robot_state_(new moveit::core::RobotState(robot_model_));
