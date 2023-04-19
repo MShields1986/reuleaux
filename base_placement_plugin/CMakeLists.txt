@@ -104,9 +104,9 @@ catkin_package(
     interactive_markers
     pluginlib
     roscpp
-    rqt_gui
+    # rqt_gui
+    # rqt_gui_cpp
     rviz
-    rqt_gui_cpp
     visualization_msgs
     map_creator
 )
@@ -115,11 +115,9 @@ catkin_package(
 # <<<<<<< HEAD
 qt_wrap_ui(UI_GENERATED_HEADERS ${base_placement_plugin_UIS})
 
-add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
+# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
 # add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_MOCS} ${base_placement_plugin_UIS_H})
 
-
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
 
 add_library(
   ${PROJECT_NAME}
@@ -129,6 +127,9 @@ add_library(
   ${base_placement_plugin_MOCS}
   ${base_placement_plugin_UIS_H}
 )
+
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
+
 
 # =======
 # qt4_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
