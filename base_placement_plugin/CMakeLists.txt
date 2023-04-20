@@ -18,12 +18,11 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   moveit_ros_planning_interface
   moveit_core
+  eigen_conversions #?
 )
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# find_package(HDF5 REQUIRED)
 
 if(rviz_QT_VERSION VERSION_LESS "5")
   message(STATUS "Using Qt4 based on the rviz_QT_VERSION: ${rviz_QT_VERSION}")
@@ -44,24 +43,9 @@ else()
 endif()
 
 add_definitions(-DQT_NO_KEYWORDS)
- 
 
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES 
-	${PROJECT_NAME}
-  CATKIN_DEPENDS
-  	interactive_markers
-  	pluginlib
-  	roscpp
-  #rqt_gui
-  	rviz
-  #rqt_gui_cpp
-  	visualization_msgs
-  	map_creator
-)
 
-include_directories(create_marker include/base_placement_plugin/)
+include_directories(create_marker include/base_placement_plugin/) #?
 add_library(create_marker  src/create_marker.cpp)
 target_link_libraries(create_marker  ${catkin_LIBRARIES} )
 
@@ -98,17 +82,16 @@ set(base_placement_plugin_INCLUDE_DIRECTORIES
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+
 catkin_package(
-  INCLUDE_DIRS
-  ${base_placement_plugin_INCLUDE_DIRECTORIES}
-  LIBRARIES
-  ${PROJECT_NAME}
+  INCLUDE_DIRS ${base_placement_plugin_INCLUDE_DIRECTORIES}
+  LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
     interactive_markers
     pluginlib
     roscpp
-    # rqt_gui
-    # rqt_gui_cpp
+    # rqt_gui #?
+    # rqt_gui_cpp #?
     rviz
     visualization_msgs
     map_creator
@@ -120,8 +103,6 @@ qt_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
 
 include_directories(${base_placement_plugin_INCLUDE_DIRECTORIES} ${catkin_INCLUDE_DIRS})
 
-# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
-# add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_MOCS} ${base_placement_plugin_UIS_H})
 add_library(
   ${PROJECT_NAME}
   ${base_placement_plugin_SRCS}
@@ -130,8 +111,6 @@ add_library(
   ${base_placement_plugin_UIS_H}
 )
 
-# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
-# target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}  yaml-cpp create_marker)
 target_link_libraries(
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
