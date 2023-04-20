@@ -61,29 +61,32 @@ catkin_package(
   	map_creator
 )
 
+include_directories(create_marker include/base_placement_plugin/)
 add_library(create_marker  src/create_marker.cpp)
 target_link_libraries(create_marker  ${catkin_LIBRARIES} )
 
 
 set(base_placement_plugin_SRCS
+  src/add_robot_base.cpp
   src/add_way_point.cpp
+  # src/create_marker.cpp #?
+  src/place_base.cpp
   src/point_tree_item.cpp
   src/point_tree_model.cpp
   src/widgets/base_placement_widget.cpp
-  src/place_base.cpp
-  src/add_robot_base.cpp
   ${base_placement_plugin_MOCS}
   ${MOC_FILES}
 )
 
 
 set(base_placement_plugin_HDRS
+  include/base_placement_plugin/add_robot_base.h
   include/base_placement_plugin/add_way_point.h
+  # include/base_placement_plugin/create_marker.h #?
+  include/base_placement_plugin/place_base.h
   include/base_placement_plugin/point_tree_item.h
   include/base_placement_plugin/point_tree_model.h
   include/base_placement_plugin/widgets/base_placement_widget.h
-  include/base_placement_plugin/place_base.h
-  include/base_placement_plugin/add_robot_base.h
 )
 
 set(base_placement_plugin_UIS
@@ -112,7 +115,6 @@ catkin_package(
 )
 
 
-# <<<<<<< HEAD
 qt_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
 qt_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
 
@@ -120,7 +122,6 @@ include_directories(${base_placement_plugin_INCLUDE_DIRECTORIES} ${catkin_INCLUD
 
 # add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_UIS} ${UI_GENERATED_HEADERS}) 
 # add_library(${PROJECT_NAME} ${base_placement_plugin_SRCS} ${base_placement_plugin_MOCS} ${base_placement_plugin_UIS_H})
-
 add_library(
   ${PROJECT_NAME}
   ${base_placement_plugin_SRCS}
@@ -131,7 +132,6 @@ add_library(
 
 # target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_LIBRARIES} ${rviz_DEFAULT_PLUGIN_LIBRARIES} yaml-cpp )
 # target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}  yaml-cpp create_marker)
-
 target_link_libraries(
   ${PROJECT_NAME}
   ${catkin_LIBRARIES}
