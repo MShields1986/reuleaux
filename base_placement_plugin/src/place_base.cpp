@@ -3,9 +3,6 @@
 #include <boost/assert.hpp>
 #include <math.h>
 
-#include <Eigen/Eigen>
-#include <eigen_conversions/eigen_msg.h>
-
 #include <base_placement_plugin/place_base.h>
 
 #include <octomap/octomap.h>

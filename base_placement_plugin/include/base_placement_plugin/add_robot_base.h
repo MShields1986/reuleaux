@@ -20,9 +20,13 @@
 #include <geometry_msgs/PointStamped.h>
 #include <std_msgs/ColorRGBA.h>
 #include <tf/tf.h>
+#include <tf_conversions/tf_eigen.h>
 #include <tf/transform_listener.h>
 #include <tf/message_filter.h>
 #include <message_filters/subscriber.h>
+
+#include <Eigen/Eigen>
+#include <eigen_conversions/eigen_msg.h>
 
 #include <rviz/properties/bool_property.h>
 #include <rviz/properties/string_property.h>

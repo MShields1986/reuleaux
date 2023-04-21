@@ -6,6 +6,10 @@
 #include <visualization_msgs/InteractiveMarker.h>
 #include <tf2/LinearMath/Transform.h>
 #include <tf2/LinearMath/Quaternion.h>
+
+#include <tf/tf.h>
+#include <tf_conversions/tf_eigen.h>
+
 #include <Eigen/Eigen>
 #include <eigen_conversions/eigen_msg.h>
 

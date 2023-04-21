@@ -1,20 +1,23 @@
+#include <geometry_msgs/PoseArray.h>
+
+#include <Eigen/Eigen>
+#include <eigen_conversions/eigen_msg.h>
+
 #include <tf/tf.h>
 #include <tf_conversions/tf_eigen.h>
 
-#include <geometry_msgs/PoseArray.h>
-
 #include <pluginlib/class_loader.h>
 #include <std_msgs/String.h>
-#include<base_placement_plugin/create_marker.h>
+#include <base_placement_plugin/create_marker.h>
 
-#include<moveit/planning_scene_monitor/planning_scene_monitor.h>
-#include<moveit/move_group_interface/move_group_interface.h>
-#include<moveit/robot_model_loader/robot_model_loader.h>
-#include<moveit/robot_model/robot_model.h>
-#include<moveit/robot_model/joint_model_group.h>
-#include<moveit/robot_state/robot_state.h>
+#include <moveit/planning_scene_monitor/planning_scene_monitor.h>
+#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/robot_model_loader/robot_model_loader.h>
+#include <moveit/robot_model/robot_model.h>
+#include <moveit/robot_model/joint_model_group.h>
+#include <moveit/robot_state/robot_state.h>
 
-#include<base_placement_plugin/add_robot_base.h>
+#include <base_placement_plugin/add_robot_base.h>
 
 
 #include <QObject>
