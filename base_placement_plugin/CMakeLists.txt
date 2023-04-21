@@ -46,11 +46,6 @@ endif()
 add_definitions(-DQT_NO_KEYWORDS)
 
 
-include_directories(create_marker include/base_placement_plugin/) #?
-add_library(create_marker  src/create_marker.cpp)
-target_link_libraries(create_marker  ${catkin_LIBRARIES} )
-
-
 set(base_placement_plugin_SRCS
   src/add_robot_base.cpp
   src/add_way_point.cpp
@@ -94,6 +89,9 @@ catkin_package(
     map_creator
 )
 
+include_directories(create_marker include/base_placement_plugin/) #?
+add_library(create_marker  src/create_marker.cpp)
+target_link_libraries(create_marker  ${catkin_LIBRARIES} )
 
 qt_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
 qt_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
