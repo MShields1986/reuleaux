@@ -795,7 +795,7 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
   for (int i = 0; i < po.size(); ++i)
   {
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/base_link";
+    marker.header.frame_id = "base_link";
     marker.header.stamp = ros::Time::now();
     marker.ns = "points";
     marker.action = visualization_msgs::Marker::ADD;
