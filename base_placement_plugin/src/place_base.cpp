@@ -751,8 +751,8 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
   */
   ROS_INFO("Showing Base Locations by Arrow: Arrows are pointing in Z direction");
   std::vector<geometry_msgs::Pose> pose_arr;
-  for(int i=0; i<po.size(); i++)
   // for(int i=0; i<po.size(); ++i)
+  for(int i=0; i<po.size(); i++)
   {
     tf2::Transform trns;
     tf2::Quaternion quat(po[i].orientation.x, po[i].orientation.y, po[i].orientation.z, po[i].orientation.w);
