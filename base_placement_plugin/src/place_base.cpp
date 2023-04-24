@@ -751,7 +751,8 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
   */
   ROS_INFO("Showing Base Locations by Arrow: Arrows are pointing in Z direction");
   std::vector<geometry_msgs::Pose> pose_arr;
-  for(int i=0;i<po.size();i++)
+  for(int i=0; i<po.size(); i++)
+  // for(int i=0; i<po.size(); ++i)
   {
     tf2::Transform trns;
     tf2::Quaternion quat(po[i].orientation.x, po[i].orientation.y, po[i].orientation.z, po[i].orientation.w);
@@ -778,6 +779,7 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
     new_pose.position.x = new_pose_vec[0];
     new_pose.position.y = new_pose_vec[1];
     new_pose.position.z = new_pose_vec[2];
+    ROS_INFO_STREAM("Base PoseArray " << i << " | X: " << new_pose.position.x << " Y: " << new_pose.position.y << " Z: " << new_pose.position.z);
     new_pose.orientation.x = new_pose_quat[0];
     new_pose.orientation.y = new_pose_quat[1];
     new_pose.orientation.z = new_pose_quat[2];
@@ -789,7 +791,7 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
   ros::NodeHandle nh;
   ros::Publisher marker_pub = nh.advertise< visualization_msgs::MarkerArray >("visualization_marker_array", 1);
   visualization_msgs::MarkerArray markerArr;
-  for (int i = 0; i < po.size(); ++i)
+  for (int i = 0; i<po.size(); ++i)
   {
     visualization_msgs::Marker marker;
     marker.header.frame_id = "base_link";
@@ -809,10 +811,11 @@ void PlaceBase::showBaseLocationsbyArrow(std::vector< geometry_msgs::Pose > po)
     marker.id = i;
 
     marker.pose = pose_arr[i];
+    ROS_INFO_STREAM("Base MarkerArray " << i << " | X: " << marker.pose.position.x << " Y: " << marker.pose.position.y << " Z: " << marker.pose.position.z);
     markerArr.markers.push_back(marker);
   }
   marker_pub.publish(markerArr);
-
+  ROS_INFO("MarkerArray Published");
 }
 
 
@@ -934,13 +937,13 @@ void PlaceBase::ShowUnionMap(bool show_map)
       wss.point.x = it->first[0];
       wss.point.y = it->first[1];
       wss.point.z = it->first[2];
-      ROS_DEBUG_STREAM("X: " << wss.point.x << "Y: " << wss.point.y << "Z: " << wss.point.z);
+      ROS_DEBUG_STREAM("Union Map | X: " << wss.point.x << " Y: " << wss.point.y << " Z: " << wss.point.z);
       wss.ri = it->second;
-      ROS_DEBUG_STREAM("RI: " << wss.ri);
+      ROS_DEBUG_STREAM("Union Map | RI: " << wss.ri);
       ws.WsSpheres.push_back(wss);
     }
     workspace_pub.publish(ws);
-    ROS_DEBUG("Pub'd");
+    ROS_INFO("Union Map | Pub'd");
   }
 }
 
