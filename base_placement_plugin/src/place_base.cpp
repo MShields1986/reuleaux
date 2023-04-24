@@ -934,10 +934,13 @@ void PlaceBase::ShowUnionMap(bool show_map)
       wss.point.x = it->first[0];
       wss.point.y = it->first[1];
       wss.point.z = it->first[2];
+      ROS_DEBUG_STREAM("X: " << wss.point.x << "Y: " << wss.point.y << "Z: " << wss.point.z);
       wss.ri = it->second;
+      ROS_DEBUG_STREAM("RI: " << wss.ri);
       ws.WsSpheres.push_back(wss);
     }
     workspace_pub.publish(ws);
+    ROS_DEBUG("Pub'd");
   }
 }
 
