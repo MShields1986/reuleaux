@@ -73,7 +73,8 @@ set(base_placement_plugin_UIS
 
 set(base_placement_plugin_INCLUDE_DIRECTORIES
   include
-  # ${CMAKE_CURRENT_BINARY_DIR}
+  include/base_placement_plugin/ #?
+  # ${CMAKE_CURRENT_BINARY_DIR} #?
 )
 
 
@@ -89,14 +90,14 @@ catkin_package(
     map_creator
 )
 
-include_directories(create_marker include/base_placement_plugin/) #?
-add_library(create_marker  src/create_marker.cpp)
-target_link_libraries(create_marker  ${catkin_LIBRARIES} )
-
 qt_wrap_cpp(base_placement_plugin_MOCS ${base_placement_plugin_HDRS} )
 qt_wrap_ui(base_placement_plugin_UIS_H ${base_placement_plugin_UIS} )
 
 include_directories(${base_placement_plugin_INCLUDE_DIRECTORIES} ${catkin_INCLUDE_DIRS})
+
+# include_directories(create_marker include/base_placement_plugin/) #?
+add_library(create_marker  src/create_marker.cpp)
+target_link_libraries(create_marker  ${catkin_LIBRARIES} )
 
 add_library(
   ${PROJECT_NAME}
