@@ -501,7 +501,8 @@ bool Hdf5Dataset::h5ToMultiMapPoses(MultiMap& pose_col, MapVecDouble& sphere_col
     }
     count[1] = 10;
 
-    double data_out[count[0]][count[1]];
+    std::vector<double> data_out_buf(count[0] * count[1]);
+    double (*data_out)[10] = reinterpret_cast<double(*)[10]>(data_out_buf.data());
 
     status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
     hsize_t dimsm[2];
